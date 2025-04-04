@@ -1,179 +1,60 @@
-# Three.js + TypeScript + Vite Boilerplate
+# Performance Monitoring with Stats in Three.js
 
-A minimal boilerplate to kickstart Three.js development using **TypeScript** and **Vite** for lightning-fast builds.
-
----
-
-## 📦 Features
-
-- ⚡️ Vite-powered build setup
-- 📜 TypeScript support
-- 🎮 Live reload with `npm run dev`
-- 🎲 Basic 3D spinning cube scene using Three.js
-- 🧼 Clean project structure
-
----
-
-## 🚀 Getting Started
-
-### 🔧 Prerequisites
-
-Make sure [Node.js](https://nodejs.org/) is installed on your system (includes npm).
-
----
-
-### 🛠️ Step-by-Step Setup
-
-#### 1. Create a Vite project
-
-```bash
-npm create vite@latest
-```
-
-Follow the CLI prompts:
+Three.js includes a helpful module for monitoring performance called `stats.module`, located in:
 
 ```
-✔ Project name: … three-js-ts-boilerplate
-✔ Select a framework: › Vanilla
-✔ Select a variant: › TypeScript
+three/examples/jsm/libs/stats.module.js
+```
+
+This module can be used to track FPS (frames per second) and render performance in real-time.
+
+---
+
+## 🎞️ Importing Stats
+
+You can import the module like this:
+
+```js
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 ```
 
 ---
 
-#### 2. Move into the project folder
+## 🛠️ Setting Up Stats
 
-```bash
-cd three-js-ts-boilerplate
+After importing, initialize and append the stats panel to your HTML document:
+
+```js
+const stats = Stats();
+document.body.appendChild(stats.dom);
 ```
 
 ---
 
-#### 3. Install dependencies
+## 🔁 Using Stats in the Animation Loop
 
-```bash
-npm install
-npm install three --save-dev
-npm install @types/three --save-dev
+To keep the stats panel updated, call `stats.update()` inside your animation loop:
 
-```
-
----
-
-#### 4. Start the development server
-
-```bash
-npm run dev
-```
-
-Now open your browser and go to:
-
-👉 [http://localhost:5173](http://localhost:5173)
-
-You should see a running Vite + TypeScript template.
-
----
-
-### 🧹 Cleanup
-
-Delete the following default files:
-
-```text
-src/vite.svg
-src/counter.ts
-src/typescript.svg
-```
-
----
-
-## 🧾 Replace Files
-
-Replace the content of these files with the following:
-
----
-
-### `index.html`
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Three.js TypeScript BP</title>
-  </head>
-
-  <body>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-</html>
-```
-
----
-
-### `src/style.css`
-
-```css
-body {
-  overflow: hidden;
-  margin: 0px;
-}
-```
-
----
-
-### `src/main.ts`
-
-```ts
-import './style.css'
-import * as THREE from 'three'
-
-const scene = new THREE.Scene()
-
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-)
-camera.position.z = 1.5
-
-const renderer = new THREE.WebGLRenderer()
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight
-  camera.updateProjectionMatrix()
-  renderer.setSize(window.innerWidth, window.innerHeight)
-})
-
-const geometry = new THREE.BoxGeometry()
-const material = new THREE.MeshNormalMaterial({ wireframe: true })
-
-const cube = new THREE.Mesh(geometry, material)
-scene.add(cube)
-
+```js
 function animate() {
-  requestAnimationFrame(animate)
-  cube.rotation.x += 0.01
-  cube.rotation.y += 0.01
-  renderer.render(scene, camera)
-}
+    requestAnimationFrame(animate);
 
-animate()
+    // Your rendering and update logic here...
+
+    stats.update();  // Updates the stats panel
+}
 ```
 
+---
+
+## 📌 Notes
+
+- The Stats panel updates independently of Three.js and can be used in other JavaScript projects as well.
+- It’s useful for debugging performance issues or optimizing render times.
+- Stats is bundled with the Three.js examples, so you don’t need to install it separately.
 
 ---
 
-## 📄 License
 
-MIT — free to use, modify and distribute.
+The `Stats` panel provides a simple but powerful way to keep an eye on your rendering performance as your scene grows in complexity.
 
----
-
-## 👋 Acknowledgements
-
-- [Three.js](https://threejs.org/)
-- [Vite](https://vitejs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
